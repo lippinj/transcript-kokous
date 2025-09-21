@@ -19,6 +19,13 @@ class Snippet:
     def from_json(j: dict):
         return Snippet(j["text"], j["start"], j["duration"])
 
+    def to_json(self):
+        return {
+            "start": self.start,
+            "duration": self.duration,
+            "text": self.text,
+        }
+
 
 @dataclass
 class Transcript:

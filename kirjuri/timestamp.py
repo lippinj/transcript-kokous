@@ -15,6 +15,7 @@ def tsformatf(s: float):
     h, m, s = hms(s)
     return f"{h:02d}:{m:02d}:{s:02.3f}"
 
+
 def dformatf(s: float):
     h, m, s = hms(s)
     if h > 0:

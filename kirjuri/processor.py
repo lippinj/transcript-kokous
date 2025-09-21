@@ -3,7 +3,7 @@ import shutil
 from itertools import pairwise
 
 from .raw import Snippet, Transcript
-from .timestamp import tsformat, tsformatf
+from .timestamp import tsformat, tsformatf, dformatf
 
 
 def is_note(x):
@@ -12,6 +12,10 @@ def is_note(x):
 
 
 class Block(Transcript):
+
+    @property
+    def filename(self):
+        return f"{tsformat(self.start).replace(':', '.')}.md"
 
     def split_by_speaker(self):
         dst = BlockBuilder(self)
@@ -93,9 +97,21 @@ class Processor:
         os.mkdir(dirname)
 
         for block in self.blocks:
-            ts = int(block.start)
-            with open(f"{dirname}/{ts}.md", "w", encoding="utf-8") as f:
-                f.write(f"Alkaa [{tsformat(block.start)}]({block.url}), kesto {tsformatf(block.duration)}\n\n")
+            with open(f"{dirname}/{block.filename}", "w", encoding="utf-8") as f:
+                f.write(f"Alkaa {tsformat(block.start)}, ")
+                f.write(f"kesto {dformatf(block.duration)} ")
+                f.write(f"([video]({block.url}))\n\n")
                 f.write(f"{block.text}\n")
+
+        with open(f"{dirname}/index.md", "w", encoding="utf-8") as f:
+            for block in self.blocks:
+                f.write(f"Alkaa {tsformat(block.start)}, ")
+                f.write(f"kesto {dformatf(block.duration)} ")
+                f.write(f"([teksti]({block.filename}), [video]({block.url}))\n\n")
+                if len(block.text) < 300:
+                    f.write(f"_{block.text}_\n\n")
+                else:
+                    f.write(f"_{block.text[:296]} ..._\n\n")
+
 
         return " ".join([s.text for s in self.raw])

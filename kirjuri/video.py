@@ -10,7 +10,7 @@ class Video:
 
     @property
     def base_url(self):
-        return f"https://www.youtube.com/watch?v={self.video_id}"
+        return f"https://www.youtube.com/watch?v={self.id}"
 
     def url(self, timestamp: int | None = None):
         if timestamp:

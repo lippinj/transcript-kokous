@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from .raw import Snippet, Transcript
+from .transcript import Snippet, Transcript
 from .video import Video
 
 
@@ -13,7 +13,7 @@ def load(video_id: str) -> Transcript:
     """Load a raw transcript (from cache if possible)"""
     spec = FetchSpec(video_id, ["fi"])
     snippets = Snippet.from_json_list(_load_raw(spec))
-    return Transcript.from_json(Video(video_id), snippets)
+    return Transcript(Video(video_id), snippets)
 
 
 # Implementation details below

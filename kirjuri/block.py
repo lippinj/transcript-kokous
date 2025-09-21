@@ -1,7 +1,7 @@
 from itertools import pairwise
 
-from .raw import Snippet, Transcript
-from .timestamp import tsformat, tsformatf, dformatf
+from . import timestamp
+from .transcript import Snippet, Transcript
 
 
 def is_note(snippet):
@@ -13,7 +13,7 @@ class Block(Transcript):
 
     @property
     def filename(self):
-        return f"{tsformat(self.start).replace(':', '.')}.md"
+        return f"{timestamp.tsformat(self.start).replace(':', '.')}.md"
 
     def split_by_speaker(self):
         dst = BlockBuilder(self)
@@ -55,6 +55,11 @@ class Block(Transcript):
             "snippets": [snippet.to_json() for snippet in self],
         }
 
+    @staticmethod
+    def from_json(video_id: str, data: dict):
+        snippets = [Snippet.from_json(snippet) for snippet in data["snippets"]]
+        return Block(video_id, snippets)
+
 
 class BlockBuilder:
     def __init__(self, src: Block):
@@ -62,7 +67,7 @@ class BlockBuilder:
         self.dst = []
 
     def build(self):
-        return [Block(self.src.video_id, snippets) for snippets in self.dst]
+        return [Block(self.src.video, snippets) for snippets in self.dst]
 
     def add(self, snippet):
         if len(self.dst) == 0:

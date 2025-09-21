@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class RawSnippet:
+class Snippet:
     text: str
     start: float
     duration: float
@@ -17,12 +17,13 @@ class RawSnippet:
 
     @staticmethod
     def from_json(j: dict):
-        return RawSnippet(j["text"], j["start"], j["duration"])
+        return Snippet(j["text"], j["start"], j["duration"])
 
 
 @dataclass
-class RawTranscript:
-    snippets: list[RawSnippet]
+class Transcript:
+    video_id: str
+    snippets: list[Snippet]
 
     def __len__(self):
         return len(self.snippets)
@@ -30,18 +31,29 @@ class RawTranscript:
     def __iter__(self):
         return iter(self.snippets)
 
-    def __getitem__(self, *args):
-        return self.snippets[*args]
+    def __getitem__(self, i):
+        return self.snippets[i]
 
+    @property
+    def url(self):
+        return f"https://www.youtube.com/watch?v={self.video_id}&t={int(self.start)}"
+
+    @property
     def start(self):
         return self[0].start
 
+    @property
     def stop(self):
         return self[-1].stop
 
+    @property
     def duration(self):
         return self.stop - self.start
 
+    @property
+    def text(self):
+        return " ".join([s.text for s in self])
+
     @staticmethod
-    def from_json(j: list):
-        return RawTranscript([RawSnippet.from_json(s) for s in j])
+    def from_json(video_id: str, j: list):
+        return Transcript(video_id, [Snippet.from_json(s) for s in j])

@@ -3,7 +3,7 @@ import os
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from .raw import RawTranscript
+from .raw import Transcript
 
 
 CACHE_DIR = ".kirjuri-cache"
@@ -24,5 +24,5 @@ def load_raw(video_id: str) -> list | dict:
         return raw
 
 
-def load(video_id: str) -> RawTranscript:
-    return RawTranscript.from_json(load_raw(video_id))
+def load(video_id: str) -> Transcript:
+    return Transcript.from_json(video_id, load_raw(video_id))

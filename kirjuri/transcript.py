@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from .video import Video
+
 
 @dataclass
 class Snippet:
@@ -19,6 +21,10 @@ class Snippet:
     def from_json(j: dict):
         return Snippet(j["text"], j["start"], j["duration"])
 
+    @staticmethod
+    def from_json_list(jj: list):
+        return [Snippet.from_json(j) for j in jj]
+
     def to_json(self):
         return {
             "start": self.start,
@@ -29,7 +35,7 @@ class Snippet:
 
 @dataclass
 class Transcript:
-    video_id: str
+    video: Video
     snippets: list[Snippet]
 
     def __len__(self):
@@ -43,7 +49,7 @@ class Transcript:
 
     @property
     def url(self):
-        return f"https://www.youtube.com/watch?v={self.video_id}&t={int(self.start)}"
+        return self.video.url(int(self.start))
 
     @property
     def start(self):
@@ -60,7 +66,3 @@ class Transcript:
     @property
     def text(self):
         return " ".join([s.text for s in self])
-
-    @staticmethod
-    def from_json(video_id: str, j: list):
-        return Transcript(video_id, [Snippet.from_json(s) for s in j])

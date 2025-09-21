@@ -7,18 +7,19 @@ from .raw import Transcript
 
 
 CACHE_DIR = ".kirjuri-cache"
-LANGS = ["fi", "se", "en"]
 
 
-def load_raw(video_id: str) -> list | dict:
+def load_raw(video_id: str, languages: list[str] | None = None) -> list | dict:
+    languages = languages or ["fi"]
     os.makedirs(CACHE_DIR, exist_ok=True)
-    filepath = f"{CACHE_DIR}/{video_id}.json"
+    filepath = f"{CACHE_DIR}/{video_id}-{'-'.join(languages)}.json"
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
     except OSError:
         api = YouTubeTranscriptApi()
-        raw = api.fetch(video_id, languages=LANGS).to_raw_data()
+        result = api.fetch(video_id, languages=languages)
+        raw = result.to_raw_data()
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(raw, f, ensure_ascii=False, indent=2)
         return raw

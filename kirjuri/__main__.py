@@ -14,8 +14,7 @@ def main(video_id, output_dir):
     processor.split_by_speaker()
     processor.split_by_silence(10)
     processor.split_by_note()
-    with open("out.json", "w", encoding="utf-8") as f:
-        f.write(json.dumps(processor.to_json(), ensure_ascii=False, indent=2))
+    processor.to_file("out.json")
     processor.dump(output_dir)
 
 

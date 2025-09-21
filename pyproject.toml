@@ -1,0 +1,19 @@
+[project]
+name = "kirjuri"
+version = "0.1.0"
+description = "YouTube transcript API tool"
+authors = [
+    {name = "User", email = "user@example.com"}
+]
+dependencies = [
+    "youtube-transcript-api",
+    "click",
+]
+requires-python = ">=3.8"
+
+[project.scripts]
+kirjuri = "kirjuri.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

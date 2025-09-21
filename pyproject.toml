@@ -3,7 +3,7 @@ name = "kirjuri"
 version = "0.1.0"
 description = "YouTube transcript API tool"
 authors = [
-    {name = "User", email = "user@example.com"}
+    {name = "Joonas Lipping", email = "lippinj@pm.me"}
 ]
 dependencies = [
     "youtube-transcript-api",

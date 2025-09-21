@@ -7,13 +7,15 @@ uv run kirjuri QJjodmUVHms
 ```
 
 Transkriptiotiedostoja ilmestyy kansioon `out/`.
-Tiedostonimi on muotoa `[aikaleima].md`.
-Kussakin tiedostossa on linkki videokohtaan, esimerkiksi:
+Kaikki katkelmat on listattu tiedostossa [`out/index.md`](out/index.md).
+Indeksissä on korkeintaan 300 merkkiä katkelman tekstistä.
+Katkelmat kokonaisuudessaan on tiedostoissa muotoa `out/[hh.mm.ss].md`.
+Kussakin tiedostossa on linkki myös videokohtaan.
 
-```md
-Alkaa [03:55:48](https://www.youtube.com/watch?v=QJjodmUVHms&t=14148), kesto 00:03:38.481
+Transkriptio on melko karkea, se kannattaa ajaa lisäksi tekoälyn läpi.
+Tiedostossa [`CLEANUP.md`](CLEANUP.md)
+on ehdotettu konteksti tekoälylle, esim. Claude Code:
 
-ja ole hyvä Oskari ja valmistautuu Viivi. Kiitos. Mä oon tehnyt kaksi muutosdotusta tähän työohjelmaan. Ensimmäinen ...
 ```
-
-Transkriptio on melko karkea, se kannattaa ajaa tekoälyn läpi.
+> Clean up @out/00.36.12.md as described in @CLEANUP.md.
+```
